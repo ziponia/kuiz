@@ -39,7 +39,7 @@ class MyDocument extends Document<any> {
         <Head>
           <style />
           <link
-            href="https://fonts.googleapis.com/css2?family=Modak&family=Nanum+Gothic:wght@400;700;800&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Jua&family=Modak&family=Nanum+Gothic:wght@400;700;800&display=swap"
             rel="stylesheet"
           />
           {this.props.styleTags}

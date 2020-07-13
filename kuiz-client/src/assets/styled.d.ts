@@ -8,10 +8,16 @@ declare module "styled-components" {
     fonts: {
       main: string;
       second: string;
+      korean: string;
     };
 
     colors: {
       main: string;
+    };
+    shadow: {
+      type1: string;
+      type2: string;
+      textShaodw: string;
     };
   }
 }

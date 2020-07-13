@@ -10,12 +10,12 @@ const query = gql`
     }
   }
 `;
-const Message: React.FC = (props) => {
+const Message: React.FC = props => {
   return (
     <Subscription subscription={query}>
       {({ loading, error, data }) => {
         if (error) return <p>ERROR!: {JSON.stringify(error)}</p>;
-        return <p>{JSON.stringify(data)}</p>;
+        return <p>data: {JSON.stringify(data)}</p>;
       }}
     </Subscription>
   );

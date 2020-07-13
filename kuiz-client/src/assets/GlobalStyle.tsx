@@ -8,8 +8,18 @@ export default createGlobalStyle`
     }
 
     html {
-        font-family: ${props => props.theme.fonts.main};
+        font-family: ${props => props.theme.fonts.second};
         font-weight: 500;
         font-size: 32px;
+    }
+
+    a, button, select, input {
+        &:focus {
+            outline: none;
+        }
+    }
+
+    li {
+        list-style-type: none;
     }
 `;
