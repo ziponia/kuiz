@@ -1,31 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+
+import gameSlice from "../module/game";
+import { RootState } from "../module";
 
 type QuestionListCreatorProps = {};
 
-type QuestionType = {
-  question: string;
-  answer: string;
-  index: number;
-};
-
-const initialState: QuestionType[] = [
-  {
-    index: 0,
-    question: "",
-    answer: "",
-  },
-];
 const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
-  const [questions, setQuestion] = useState<QuestionType[]>(initialState);
+  const { games } = useSelector((store: RootState) => store.game);
+  const dispatch = useDispatch();
+
+  const { actions } = gameSlice;
 
   const handleAnswerNext = (e: React.KeyboardEvent, currentIndex: number) => {
     if (e.keyCode === 9) {
       // tab
-      const findNextIndex = questions.find(item => item.index > currentIndex);
+      const findNextIndex = games.find(item => item.index > currentIndex);
       if (typeof findNextIndex === "undefined") {
-        setQuestion(
-          questions.concat({
+        dispatch(
+          actions.addGame({
             index: currentIndex + 1,
             question: "",
             answer: "",
@@ -33,6 +27,34 @@ const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
         );
       }
     }
+  };
+
+  const handleRowRemove = (currentIndex: number) => {
+    dispatch(actions.removeGame(currentIndex));
+  };
+
+  const handleQChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentIndex = parseInt(e.target.getAttribute("data-seq"), 10);
+    const question = e.target.value;
+    dispatch(
+      actions.setQuestionVal({
+        index: currentIndex,
+        question,
+        answer: games[currentIndex].answer,
+      })
+    );
+  };
+
+  const handleAChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentIndex = parseInt(e.target.getAttribute("data-seq"), 10);
+    const answer = e.target.value;
+    dispatch(
+      actions.setQuestionVal({
+        index: currentIndex,
+        question: games[currentIndex].question,
+        answer,
+      })
+    );
   };
 
   return (
@@ -43,21 +65,34 @@ const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
           <Cell>Answer</Cell>
           <Cell />
         </Li>
-        {questions.map(question => (
+        {games.map(game => (
           <Li
-            key={question.index}
+            key={game.index}
             className="animate__backInDown animate__animated">
             <Cell>
-              <Input placeholder="Q." />
-            </Cell>
-            <Cell>
               <Input
-                placeholder="A."
-                onKeyDown={e => handleAnswerNext(e, question.index)}
+                data-seq={game.index}
+                placeholder="Q."
+                onChange={handleQChange}
               />
             </Cell>
             <Cell>
-              <button className="remove-btn">Remove</button>
+              <Input
+                data-seq={game.index}
+                placeholder="A."
+                onKeyDown={e => handleAnswerNext(e, game.index)}
+                onChange={handleAChange}
+              />
+            </Cell>
+            <Cell>
+              {game.index > 0 && (
+                <button
+                  className="remove-btn"
+                  tabIndex={-1}
+                  onClick={() => handleRowRemove(game.index)}>
+                  Remove
+                </button>
+              )}
             </Cell>
           </Li>
         ))}
@@ -91,11 +126,11 @@ const Cell = styled.span`
   ${props => props.theme.shadow.type2};
 
   .remove-btn {
-    color: inherit;
+    color: #333;
     font-size: 0.8rem;
     background-color: transparent;
     border: 0;
-    ${props => props.theme.shadow.type2};
+    font-family: ${props => props.theme.fonts.korean};
     cursor: pointer;
   }
 `;
@@ -117,9 +152,7 @@ const Input = styled.input`
   letter-spacing: 2.2px;
 
   &::placeholder {
-    color: #ffffff;
-    text-shadow: 1px 1px 2px #ffffff, -1px -1px 0 #ffffff, 1px -1px 0 #ffffff,
-      -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+    color: #333;
   }
 `;
 

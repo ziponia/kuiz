@@ -16,7 +16,6 @@ const GRAPHQL_URI =
     : process.env.GRAPHQL_ENDPOINT;
 
 function createApolloClient() {
-  console.log("process.browser: ", process.browser);
   const httpLink = new HttpLink({
     uri: GRAPHQL_URI, // Server URL (must be absolute)
   });
