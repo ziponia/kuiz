@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: web
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 8070:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    links:
+      - client
+      - backend
+  client:
+    container_name: client
+    build:
+      context: ./kuiz-client
+      dockerfile: Dockerfile
+  backend:
+    container_name: backend
+    build:
+      context: ./kuiz-backend
+      dockerfile: Dockerfile
