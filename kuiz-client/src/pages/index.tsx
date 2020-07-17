@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import Layout from "../components/Layout";
 import styled from "styled-components";
 import Link from "next/link";
+
+import { useSession, signin, signout } from "next-auth/client";
 
 type Props = {};
 
 const IndexPage: NextPage<Props> = props => {
   const [hover, setHover] = useState(false);
   const [btnMode, setBtnMode] = useState(false);
+  const [session, loading] = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
 
   const handleHover = () => {
     setHover(true);
@@ -17,42 +24,32 @@ const IndexPage: NextPage<Props> = props => {
     setHover(false);
   };
 
-  const handleLogoClick = () => {
+  const handleLogoClick = async () => {
+    await signin();
     setBtnMode(true);
   };
 
   return (
     <MainLayout>
-      {!btnMode ? (
-        <h1
-          className={`animate__animated ${hover ? "animate__rubberBand" : ""}`}
-          onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
-          onClick={handleLogoClick}>
-          Kuiz
-        </h1>
-      ) : (
-        <>
-          <h1
-            className={`animate__animated ${
-              hover ? "animate__rubberBand" : ""
-            }`}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleLeave}
-            onClick={handleLogoClick}>
-            Kuiz
-          </h1>
-          <div className="game_actions">
-            <Link href="/create-game">
-              <button className="animate__animated animate__backInLeft">
-                Create Game
-              </button>
-            </Link>
-            <button className="animate__animated animate__backInRight">
-              Join
+      <h1
+        className={`animate__animated ${hover ? "animate__rubberBand" : ""}`}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
+        onClick={handleLogoClick}>
+        Kuiz
+      </h1>
+
+      {!loading && session && (
+        <div className="game_actions">
+          <Link href="/create-game">
+            <button className="animate__animated animate__backInLeft">
+              Create Game
             </button>
-          </div>
-        </>
+          </Link>
+          <button className="animate__animated animate__backInRight">
+            Join
+          </button>
+        </div>
       )}
     </MainLayout>
   );

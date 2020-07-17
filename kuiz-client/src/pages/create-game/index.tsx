@@ -3,11 +3,13 @@ import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import styled from "styled-components";
 import QuestionListCreator from "../../containers/QuestionListCreator";
+import { useSession } from "next-auth/client";
 
 type Props = {};
 
 const CreateGame: NextPage<Props> = props => {
   const [maxQuestion, setMaxQuestion] = useState(20);
+  const [session, loading] = useSession();
   return (
     <MainLayout>
       <h1 className="h-font animate__bounceInDown animate__animated">

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ThemeProvider } from "styled-components";
+import { Provider } from "next-auth/client";
 import { ReactReduxContext } from "react-redux";
 
 import { useApollo } from "../lib/apolloClient";
@@ -14,12 +15,15 @@ import "animate.css";
 
 const _App: any = ({ Component, pageProps }: any) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
+  const { session } = pageProps;
   // const redux = useContext(ReactReduxContext);
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-        <GlobalStyle />
+        <Provider session={session}>
+          <Component {...pageProps} />
+          <GlobalStyle />
+        </Provider>
       </ThemeProvider>
     </ApolloProvider>
   );

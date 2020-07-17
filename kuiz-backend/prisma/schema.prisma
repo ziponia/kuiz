@@ -8,9 +8,11 @@ generator client {
 }
 
 model User {
-  id        String   @default(uuid()) @id
-  userName  String
-  createdAt DateTime @default(now())
+  id           String    @default(uuid()) @id
+  email        String    @unique
+  profile_pic  String?
+  createdAt    DateTime? @default(now())
+  lastUpdateAt DateTime?
 
   @@map("tbl_user")
 }

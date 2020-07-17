@@ -20,25 +20,15 @@ export class UserResolver {
 
   @Query(returns => [User])
   async users(): Promise<User[]> {
-    const users = await this.prisma.user.findMany({});
+    const users = await this.prisma.user.findMany({
+      cursor: {
+        id: "227fd748-2b66-4446-b476-dafcbd9b5d25",
+      },
+      take: 5,
+    });
     return users.map(user => ({
       id: user.id,
-      email: user.userName,
+      email: user.email,
     }));
-  }
-
-  @Mutation(returns => User)
-  async createUser(
-    @Args({ name: "username", type: () => String }) userName: string,
-  ): Promise<User> {
-    const user = await this.prisma.user.create({
-      data: {
-        userName,
-      },
-    });
-    return {
-      id: user.id,
-      email: user.userName,
-    };
   }
 }
