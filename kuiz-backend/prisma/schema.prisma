@@ -10,9 +10,25 @@ generator client {
 model User {
   id           String    @default(uuid()) @id
   email        String    @unique
+  games        Game[]
   profile_pic  String?
   createdAt    DateTime? @default(now())
   lastUpdateAt DateTime?
 
   @@map("tbl_user")
+}
+
+model Game {
+  id        String  @default(uuid()) @id
+  questions QnA[]
+  userId    String?
+  author    User?   @relation(fields: [userId], references: [id])
+}
+
+model QnA {
+  id       String  @default(uuid()) @id
+  question String
+  answer   String
+  game     Game?   @relation(fields: [gameId], references: [id])
+  gameId   String?
 }

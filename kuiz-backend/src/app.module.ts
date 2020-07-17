@@ -6,6 +6,7 @@ import { AppService } from "./app.service";
 import { UserModule } from "./user/user.module";
 import { MessageModule } from "./message/message.module";
 import { PrismaService } from "./prisma/prisma.service";
+import { GameModule } from "./game/game.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PrismaService } from "./prisma/prisma.service";
     }),
     UserModule,
     MessageModule,
+    GameModule,
   ],
   providers: [AppService, PrismaService],
 })
