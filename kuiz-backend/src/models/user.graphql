@@ -1,0 +1,13 @@
+type User {
+  id: ID!
+  email: String!
+  profile_pic: String
+  createAt: DateTime
+  lastUpdateAt: DateTime
+  games: [Game]
+}
+
+extend type Query {
+  users: [User]
+  me: User
+}

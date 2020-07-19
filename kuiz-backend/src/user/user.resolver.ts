@@ -2,11 +2,12 @@ import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
 
 import { PrismaService } from "src/prisma/prisma.service";
-import { User } from "../models/user.model";
+import { User } from "src/models/schema";
+// import { User } from "../models/user.model";
 
 const pubSub = new PubSub();
 
-@Resolver(of => User)
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly prisma: PrismaService) {}
 

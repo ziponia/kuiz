@@ -1,0 +1,10 @@
+scalar JSON
+scalar Date
+scalar DateTime
+
+type Query {
+  _version: String
+}
+type Mutation {
+  _empty: String
+}

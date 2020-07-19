@@ -1,0 +1,15 @@
+type Game {
+  id: ID!
+  author: User
+  questions: [Qna]
+  createAt: DateTime
+}
+
+input AddGameInput {
+  question: String
+  answer: String
+}
+
+extend type Mutation {
+  addGame(input: [AddGameInput!]!): Game
+}

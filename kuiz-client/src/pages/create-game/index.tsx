@@ -4,8 +4,18 @@ import Layout from "../../components/Layout";
 import styled from "styled-components";
 import QuestionListCreator from "../../containers/QuestionListCreator";
 import { useSession } from "next-auth/client";
+import gql from "graphql-tag";
 
 type Props = {};
+
+const ADD_GAME = gql`
+  mutation addGame($type: String!) {
+    addTodo(type: $type) {
+      id
+      type
+    }
+  }
+`;
 
 const CreateGame: NextPage<Props> = props => {
   const [maxQuestion, setMaxQuestion] = useState(20);

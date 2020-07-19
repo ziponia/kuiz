@@ -1,0 +1,8 @@
+type Qna {
+  id: ID!
+  question: String
+  answer: String
+  game: Game
+  createAt: DateTime
+  owner: User
+}

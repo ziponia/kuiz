@@ -11,10 +11,14 @@ import { GameModule } from "./game/game.module";
 @Module({
   imports: [
     GraphQLModule.forRoot({
+      typePaths: ["./**/*.graphql"],
       debug: true,
       playground: true,
-      autoSchemaFile: true,
-      installSubscriptionHandlers: true,
+      definitions: {
+        path: join(process.cwd(), "src/models/schema.ts"),
+        outputAs: "class",
+        emitTypenameField: true,
+      },
     }),
     UserModule,
     MessageModule,

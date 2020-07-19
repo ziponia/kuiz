@@ -23,6 +23,8 @@ model Game {
   questions QnA[]
   userId    String?
   author    User?   @relation(fields: [userId], references: [id])
+
+  @@map("tbl_game")
 }
 
 model QnA {
@@ -31,4 +33,6 @@ model QnA {
   answer   String
   game     Game?   @relation(fields: [gameId], references: [id])
   gameId   String?
+
+  @@map("tbl_qna")
 }
