@@ -14,8 +14,9 @@ import { AppContext } from "next/app";
 import "animate.css";
 
 const _App: any = ({ Component, pageProps }: any) => {
-  const apolloClient = useApollo(pageProps.initialApolloState);
   const { session } = pageProps;
+  const apolloClient = useApollo(pageProps.initialApolloState);
+
   // const redux = useContext(ReactReduxContext);
   return (
     <ApolloProvider client={apolloClient}>

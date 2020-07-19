@@ -5,14 +5,15 @@ import styled from "styled-components";
 import QuestionListCreator from "../../containers/QuestionListCreator";
 import { useSession } from "next-auth/client";
 import gql from "graphql-tag";
+import { Mutation } from "@apollo/react-components";
+import { useMutation } from "@apollo/react-hooks";
 
 type Props = {};
 
 const ADD_GAME = gql`
-  mutation addGame($type: String!) {
-    addTodo(type: $type) {
+  mutation {
+    addGame(input: [{ question: "12", answer: "afa" }]) {
       id
-      type
     }
   }
 `;
@@ -20,6 +21,12 @@ const ADD_GAME = gql`
 const CreateGame: NextPage<Props> = props => {
   const [maxQuestion, setMaxQuestion] = useState(20);
   const [session, loading] = useSession();
+  const [addGame, { data }] = useMutation(ADD_GAME);
+
+  const handleCreateGame = async () => {
+    const { data } = await addGame({ variables: {} });
+  };
+
   return (
     <MainLayout>
       <h1 className="h-font animate__bounceInDown animate__animated">
@@ -29,7 +36,11 @@ const CreateGame: NextPage<Props> = props => {
         문제 를 생성 해 주세요! (최대 {maxQuestion}문제)
       </p>
       <div className="action-block">
-        <button className="action-btn create-game-btn">Create Game!</button>
+        <button
+          className="action-btn create-game-btn"
+          onClick={handleCreateGame}>
+          Create Game!
+        </button>
       </div>
       <QuestionListCreator />
     </MainLayout>

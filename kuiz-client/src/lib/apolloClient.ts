@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
+import { HttpLink, createHttpLink } from "apollo-link-http";
 import { split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
@@ -15,9 +15,12 @@ const GRAPHQL_URI =
     ? "http://localhost:3001/graphql"
     : process.env.GRAPHQL_ENDPOINT;
 
-function createApolloClient() {
-  const httpLink = new HttpLink({
-    uri: GRAPHQL_URI, // Server URL (must be absolute)
+function createApolloClient(token?: string) {
+  const httpLink = createHttpLink({
+    uri: GRAPHQL_URI,
+    headers: {
+      authorization: (token && `Bearer ${token}`) || undefined,
+    },
   });
 
   let wsLink = null;
@@ -42,6 +45,7 @@ function createApolloClient() {
       return !(kind === "OperationDefinition" && operation === "subscription");
     },
     httpLink,
+
     process.browser && wsLink
   );
 

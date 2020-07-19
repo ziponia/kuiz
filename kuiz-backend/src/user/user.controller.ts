@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get } from "@nestjs/common";
+import { Controller, Post, Body, Get, Req } from "@nestjs/common";
 import { AuthData } from "./user.interface";
 import { UserService } from "./user.service";
+import { Request } from "express";
 
 @Controller("user")
 export class UserController {
@@ -9,13 +10,6 @@ export class UserController {
   @Post("sign")
   public async sign(@Body() data: AuthData) {
     return await this.userService.sign(data);
-  }
-
-  @Get("test")
-  public async userTest() {
-    return {
-      user: 1,
-    };
   }
 }
 
