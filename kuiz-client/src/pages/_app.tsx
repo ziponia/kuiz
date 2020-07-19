@@ -1,7 +1,11 @@
 import React, { useContext } from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ThemeProvider } from "styled-components";
-import { Provider } from "next-auth/client";
+import {
+  Provider as AuthProvider,
+  getSession,
+  setOptions,
+} from "next-auth/client";
 import { ReactReduxContext } from "react-redux";
 
 import { useApollo } from "../lib/apolloClient";
@@ -9,37 +13,35 @@ import theme from "../assets/theme";
 import GlobalStyle from "../assets/GlobalStyle";
 import { wrapper } from "../module";
 
-import { AppContext } from "next/app";
+import App, { AppContext } from "next/app";
 
 import "animate.css";
 
-const _App: any = ({ Component, pageProps }: any) => {
-  const { session } = pageProps;
-  const apolloClient = useApollo(pageProps.initialApolloState);
+setOptions({ site: "http://localhost:3000" });
+
+const _App: any = ({ Component, pageProps, session }: any) => {
+  console.log("session: ", session);
+  const apolloClient = useApollo({ ...pageProps.initialApolloState, session });
 
   // const redux = useContext(ReactReduxContext);
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={theme}>
-        <Provider session={session}>
+        <AuthProvider session={session}>
           <Component {...pageProps} />
           <GlobalStyle />
-        </Provider>
+        </AuthProvider>
       </ThemeProvider>
     </ApolloProvider>
   );
 };
 
-_App.getInitialProps = async ({ Component, ctx }: AppContext) => {
+_App.getInitialProps = async (context: AppContext) => {
+  const session = await getSession(context.ctx);
+  const appProps = await App.getInitialProps(context);
   return {
-    pageProps: {
-      // Call page-level getInitialProps
-      ...(Component.getInitialProps
-        ? await Component.getInitialProps(ctx)
-        : {}),
-      // Some custom thing for all pages
-      appProp: ctx.pathname,
-    },
+    ...appProps,
+    session,
   };
 };
 

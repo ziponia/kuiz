@@ -22,7 +22,7 @@ import { TokenService } from "./token/token.service";
       context: ctx => {
         const req = ctx.req as Request;
 
-        console.log("ctx: ", req.headers["authorization"]);
+        console.log("ctx: ", req.cookies);
         return {};
       },
       definitions: {

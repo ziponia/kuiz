@@ -15,12 +15,10 @@ const GRAPHQL_URI =
     ? "http://localhost:3001/graphql"
     : process.env.GRAPHQL_ENDPOINT;
 
-function createApolloClient(token?: string) {
+function createApolloClient() {
   const httpLink = createHttpLink({
     uri: GRAPHQL_URI,
-    headers: {
-      authorization: (token && `Bearer ${token}`) || undefined,
-    },
+    credentials: "same-origin",
   });
 
   let wsLink = null;
