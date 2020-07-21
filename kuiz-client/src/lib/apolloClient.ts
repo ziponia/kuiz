@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink, createHttpLink } from "apollo-link-http";
+import { createHttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
 import { split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
@@ -14,6 +15,21 @@ const GRAPHQL_URI =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3001/graphql"
     : process.env.GRAPHQL_ENDPOINT;
+
+/**
+ * @see https://www.apollographql.com/docs/react/v2.5/recipes/authentication/
+ */
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem("accessToken");
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
 
 function createApolloClient() {
   const httpLink = createHttpLink({
@@ -49,7 +65,7 @@ function createApolloClient() {
 
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: link,
+    link: authLink.concat(link),
     cache: new InMemoryCache(),
   });
 }
