@@ -7,6 +7,8 @@ import { useSession } from "next-auth/client";
 import gql from "graphql-tag";
 import { Mutation } from "@apollo/react-components";
 import { useMutation } from "@apollo/react-hooks";
+import { useSelector } from "react-redux";
+import { RootState } from "../../module";
 
 type Props = {};
 
@@ -20,11 +22,13 @@ const ADD_GAME = gql`
 
 const CreateGame: NextPage<Props> = props => {
   const [maxQuestion, setMaxQuestion] = useState(20);
+  const { games } = useSelector((store: RootState) => store.game);
   const [session, loading] = useSession();
   const [addGame, { data }] = useMutation(ADD_GAME);
 
   const handleCreateGame = async () => {
-    const { data } = await addGame({ variables: {} });
+    console.log(games);
+    // const { data } = await addGame({ variables: [] });
   };
 
   return (

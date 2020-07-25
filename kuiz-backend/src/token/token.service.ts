@@ -1,7 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import jwt from "jsonwebtoken";
-import { CreateTokenRequest } from "./token.interface";
+import { CreateTokenRequest, ITokenPayload } from "./token.interface";
 import { PrismaService } from "src/prisma/prisma.service";
+
+export const tokenDecode = (authorizationHeader: string): ITokenPayload => {
+  const sp = authorizationHeader.split(" ");
+  const decode = jwt.verify(sp[1], process.env.JWT_SIGN_KEY) as ITokenPayload;
+  return decode;
+};
 
 @Injectable()
 export class TokenService {

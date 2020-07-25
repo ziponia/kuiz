@@ -6,8 +6,9 @@ type Game {
 }
 
 input AddGameInput {
-  question: String
-  answer: String
+  question: String!
+  answer: String!
+  order: Int!
 }
 
 extend type Mutation {

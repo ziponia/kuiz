@@ -29,6 +29,7 @@ model Game {
 
 model QnA {
   id       String  @default(uuid()) @id
+  orders   Int
   question String
   answer   String
   game     Game?   @relation(fields: [gameId], references: [id])
