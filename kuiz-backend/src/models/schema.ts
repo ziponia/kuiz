@@ -7,8 +7,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export class AddGameInput {
-    question?: string;
-    answer?: string;
+    question: string;
+    answer: string;
+    order: number;
 }
 
 export class Game {

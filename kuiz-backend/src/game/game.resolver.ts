@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Context } from "@nestjs/graphql";
+import { Resolver, Mutation, Args } from "@nestjs/graphql";
 import { Response } from "express";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Game, AddGameInput, Qna } from "src/models/schema";
@@ -31,6 +31,7 @@ export class GameResolver {
           },
           answer: i.answer,
           question: i.question,
+          order: i.order,
         },
       });
     }
