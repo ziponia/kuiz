@@ -16,11 +16,11 @@ const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
   const handleAnswerNext = (e: React.KeyboardEvent, currentIndex: number) => {
     if (e.keyCode === 9) {
       // tab
-      const findNextIndex = games.find(item => item.index > currentIndex);
+      const findNextIndex = games.find(item => item.orders > currentIndex);
       if (typeof findNextIndex === "undefined") {
         dispatch(
           actions.addGame({
-            index: currentIndex + 1,
+            orders: currentIndex + 1,
             question: "",
             answer: "",
           })
@@ -38,7 +38,7 @@ const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
     const question = e.target.value;
     dispatch(
       actions.setQuestionVal({
-        index: currentIndex,
+        orders: currentIndex,
         question,
         answer: games[currentIndex].answer,
       })
@@ -50,7 +50,7 @@ const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
     const answer = e.target.value;
     dispatch(
       actions.setQuestionVal({
-        index: currentIndex,
+        orders: currentIndex,
         question: games[currentIndex].question,
         answer,
       })
@@ -67,29 +67,29 @@ const QuestionListCreator: React.FC<QuestionListCreatorProps> = props => {
         </Li>
         {games.map(game => (
           <Li
-            key={game.index}
+            key={game.orders}
             className="animate__backInDown animate__animated">
             <Cell>
               <Input
-                data-seq={game.index}
+                data-seq={game.orders}
                 placeholder="Q."
                 onChange={handleQChange}
               />
             </Cell>
             <Cell>
               <Input
-                data-seq={game.index}
+                data-seq={game.orders}
                 placeholder="A."
-                onKeyDown={e => handleAnswerNext(e, game.index)}
+                onKeyDown={e => handleAnswerNext(e, game.orders)}
                 onChange={handleAChange}
               />
             </Cell>
             <Cell>
-              {game.index > 0 && (
+              {game.orders > 0 && (
                 <button
                   className="remove-btn"
                   tabIndex={-1}
-                  onClick={() => handleRowRemove(game.index)}>
+                  onClick={() => handleRowRemove(game.orders)}>
                   Remove
                 </button>
               )}

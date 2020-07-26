@@ -9,7 +9,7 @@
 export class AddGameInput {
     question: string;
     answer: string;
-    order: number;
+    orders: number;
 }
 
 export class Game {
@@ -35,7 +35,7 @@ export class Qna {
     answer?: string;
     game?: Game;
     createAt?: DateTime;
-    owner?: User;
+    orders?: number;
 }
 
 export abstract class IQuery {

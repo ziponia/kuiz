@@ -8,7 +8,7 @@ export type GameState = {
 export const initialState: GameState = {
   games: [
     {
-      index: 0,
+      orders: 0,
       question: "",
       answer: "",
     },
@@ -25,11 +25,11 @@ export default createSlice({
       });
     },
     removeGame: (state, action: PayloadAction<number>) => {
-      state.games = state.games.filter(game => game.index !== action.payload);
+      state.games = state.games.filter(game => game.orders !== action.payload);
     },
     setQuestionVal: (state, action: PayloadAction<IGame>) => {
       state.games = state.games.map(game => {
-        if (game.index === action.payload.index) {
+        if (game.orders === action.payload.orders) {
           return {
             ...game,
             ...action.payload,

@@ -1,5 +1,5 @@
 export interface IGame {
-  index: number;
+  orders: number;
   question: string;
   answer: string;
 }

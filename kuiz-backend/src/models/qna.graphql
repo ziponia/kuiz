@@ -4,5 +4,5 @@ type Qna {
   answer: String
   game: Game
   createAt: DateTime
-  owner: User
+  orders: Int
 }

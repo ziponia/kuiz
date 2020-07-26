@@ -4,9 +4,17 @@ import { CreateTokenRequest, ITokenPayload } from "./token.interface";
 import { PrismaService } from "src/prisma/prisma.service";
 
 export const tokenDecode = (authorizationHeader: string): ITokenPayload => {
+  if (!authorizationHeader) return null;
+
   const sp = authorizationHeader.split(" ");
-  const decode = jwt.verify(sp[1], process.env.JWT_SIGN_KEY) as ITokenPayload;
-  return decode;
+  if (sp.length < 2) return null;
+
+  try {
+    const decode = jwt.verify(sp[1], process.env.JWT_SIGN_KEY) as ITokenPayload;
+    return decode;
+  } catch (e) {
+    return null;
+  }
 };
 
 @Injectable()

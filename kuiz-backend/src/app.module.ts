@@ -40,6 +40,6 @@ import { tokenMiddleware } from "./middleware/token.middleware";
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(tokenMiddleware).forRoutes("/graphql");
+    // consumer.apply(tokenMiddleware).forRoutes("/graphql");
   }
 }

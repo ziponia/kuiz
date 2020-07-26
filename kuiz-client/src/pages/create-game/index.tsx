@@ -13,8 +13,8 @@ import { RootState } from "../../module";
 type Props = {};
 
 const ADD_GAME = gql`
-  mutation {
-    addGame(input: [{ question: "12", answer: "afa" }]) {
+  mutation AddGamne($input: [AddGameInput!]!) {
+    addGame(input: $input) {
       id
     }
   }
@@ -27,8 +27,16 @@ const CreateGame: NextPage<Props> = props => {
   const [addGame, { data }] = useMutation(ADD_GAME);
 
   const handleCreateGame = async () => {
-    console.log(games);
-    // const { data } = await addGame({ variables: [] });
+    if (games.length <= 2) {
+      // ...TODO 게임은 2개 이상 생성 해주세여
+      return console.log("");
+    }
+
+    const { data } = await addGame({
+      variables: {
+        input: games,
+      },
+    });
   };
 
   return (
